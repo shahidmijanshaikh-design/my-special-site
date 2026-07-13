@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Question ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffb3c6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        h2 {
+            color: #ff477e;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            height: 80px;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #gfBtn {
+            background-color: #ff477e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+        }
+
+        #gfBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #bestieBtn {
+            background-color: #6c757d;
+            color: white;
+            position: absolute;
+            z-index: 10;
+            transition: all 0.1s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .date-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ff477e;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            outline: none;
+            width: 80%;
+        }
+
+        .success-msg {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1: द सवाल -->
+    <div id="page1" class="card">
+        <h2>Aap Shahid ki kya banna chahti hain? 😉</h2>
+        <div class="btn-container">
+            <button id="gfBtn" onclick="selectGf()">GF ❤️</button>
+            <button id="bestieBtn" onmouseover="moveButton()" onclick="moveButton()">Bestie 🤝</button>
+        </div>
+    </div>
+
+    <!-- Page 2: डेट फिक्सिंग -->
+    <div id="page2" class="card hidden">
+        <h2 id="congratsTitle">🎉 Congratulations!</h2>
+        <p style="font-size: 18px; margin-bottom: 20px; color: #495057;">
+            Aap Shahid ki official GF ban gayi ho! ❤️
+        </p>
+        <hr style="border: 0; height: 1px; background: #ddd; margin-bottom: 20px;">
+        
+        <h2>Aap date pe chai pine kab jao gee? ☕</h2>
+        <input type="date" id="datePicker" class="date-input">
+        <br>
+        <button id="gfBtn" onclick="fixDate()">Confirm Date</button>
+        
+        <div id="finalMessage" class="success-msg hidden"></div>
+    </div>
+
+    <script>
+        // बेस्टी बटन को भगाने वाला फंक्शन
+        function moveButton() {
+            const btn = document.getElementById('bestieBtn');
+            
+            // स्क्रीन की चौड़ाई और ऊंचाई के हिसाब से रैंडम जगह ढूंढना
+            const x = Math.random() * (window.innerWidth - btn.clientWidth - 40);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight - 40);
+            
+            // बटन को स्क्रीन पर कहीं भी भेज देना ताकि वो कार्ड से बाहर भी भाग सके
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // GF बटन क्लिक करने पर
+        function selectGf() {
+            // पहला पेज छुपाओ और दूसरा पेज दिखाओ
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+        }
+
+        // डेट कंफर्म करने पर
+        function fixDate() {
+            const dateValue = document.getElementById('datePicker').value;
+            const finalMsg = document.getElementById('finalMessage');
+            
+            if (dateValue === "") {
+                alert("Pehle date तो select करो! 😜");
+                return;
+            }
+
+            // तारीख को अच्छे फॉर्मेट में दिखाना
+            const dateObj = new Date(dateValue);
+            const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            finalMsg.innerHTML = `✅ Confirm! <br> 🥰 Date fix ho gaya: ${formattedDate} ko chai pakki!`;
+            finalMsg.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
