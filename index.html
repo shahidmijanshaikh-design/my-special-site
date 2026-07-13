@@ -5,78 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Special Question For You ❤️</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: linear-gradient(135deg, #ffe5ec, #ffb3c6); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        .card { background: white; padding: 35px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 5; }
-        .heart-icon { font-size: 50px; margin-bottom: 15px; display: inline-block; animation: pulse 1.2s infinite; }
+        body { 
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1, #ffb3c6); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+            position: relative; 
+        }
+
+        /* 🎈 तैरते हुए दिल (Floating Hearts Background) */
+        .hearts { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        .heart { position: absolute; list-style: none; display: block; width: 20px; height: 20px; background-color: rgba(255, 71, 126, 0.4); bottom: -150px; animation: floatUp 15s linear infinite; clip-path: path('M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z'); }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; } }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 40px 25px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 35px rgba(255, 71, 126, 0.2); 
+            text-align: center; 
+            max-width: 400px; 
+            width: 90%; 
+            z-index: 5; 
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .heart-icon { font-size: 50px; margin-bottom: 20px; display: inline-block; animation: pulse 1.2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         
-        h2 { color: #d90429; margin-bottom: 25px; font-size: 22px; line-height: 1.4; }
-        p { color: #495057; font-size: 16px; margin-bottom: 15px; }
+        h2 { color: #d90429; margin-bottom: 25px; font-size: 22px; line-height: 1.4; font-weight: 700; }
+        p { color: #495057; font-size: 16px; margin-bottom: 20px; font-weight: 500; }
         
-        .btn-container { display: flex; justify-content: space-around; align-items: center; position: relative; height: 100px; width: 100%; }
-        .vertical-btn-container { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
+        /* ↕️ बटनों को ऊपर-नीचे रखने के लिए वर्टिकल लेआउट */
+        .btn-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 18px; 
+            width: 100%; 
+            margin-top: 10px;
+            align-items: center;
+        }
         
-        button { padding: 15px 30px; font-size: 16px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.15); transition: all 0.2s; }
+        button { 
+            padding: 15px 40px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
+            transition: all 0.2s ease; 
+            width: 85%;
+        }
+
         .primary-btn { background: linear-gradient(45deg, #ff477e, #ff7096); color: white; }
+        .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 71, 126, 0.4); }
         .secondary-btn { background-color: #8d99ae; color: white; }
         
-        #bestieBtn, #sharafatBtn { position: absolute; z-index: 20; transition: all 0.1s ease-out; }
-        .hidden { display: none !important; }
+        /* भागने वाले बटनों की डिफ़ॉल्ट पोजीशन */
+        #bestieBtn, #sharafatBtn { position: static; z-index: 20; }
         
-        .date-input { padding: 12px; font-size: 16px; border: 2px solid #ff477e; border-radius: 10px; margin-bottom: 20px; width: 80%; text-align: center; font-weight: bold; }
+        .hidden { display: none !important; }
+        .date-input { padding: 12px; font-size: 16px; border: 2px solid #ff477e; border-radius: 12px; margin-bottom: 25px; width: 85%; text-align: center; font-weight: bold; background-color: #fff5f7; color: #495057; outline: none; }
         
         /* 🪙 स्क्रैच कार्ड की स्टाइलिंग */
-        .scratch-container {
-            position: relative;
-            width: 280px;
-            height: 180px;
-            margin: 20px auto;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            background: #fff5f7;
-        }
-
-        /* स्क्रैच के नीचे छुपा हुआ संदेश */
-        .scratch-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            z-index: 1;
-        }
-
-        .scratch-content b { color: #d90429; font-size: 18px; }
-        .scratch-content span.shayari {
-            font-size: 12px;
-            color: #ff477e;
-            margin-top: 10px;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        /* स्क्रैच करने वाली ऊपर की परत (Canvas) */
-        #scratchCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            cursor: pointer;
-            touch-action: none; /* मोबाइल पर स्क्रॉलिंग को रोकता है ताकि स्क्रैच हो सके */
-        }
+        .scratch-container { position: relative; width: 280px; height: 180px; margin: 20px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); background: #fff5f7; border: 2px dashed #ffb3c6; }
+        .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; z-index: 1; }
+        .scratch-content b { color: #d90429; font-size: 18px; margin-bottom: 5px; }
+        .scratch-content span.shayari { font-size: 12px; color: #ff477e; margin-top: 10px; font-style: italic; line-height: 1.4; font-weight: 500; }
+        #scratchCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; touch-action: none; }
     </style>
 </head>
 <body>
+
+    <!-- 🎈 बैकग्राउंड के दिल -->
+    <ul class="hearts">
+        <li class="heart" style="left: 10%; width: 25px; height: 25px; animation-delay: 0s;"></li>
+        <li class="heart" style="left: 25%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 12s;"></li>
+        <li class="heart" style="left: 70%; width: 20px; height: 20px; animation-delay: 4s;"></li>
+        <li class="heart" style="left: 85%; width: 30px; height: 30px; animation-delay: 1s; animation-duration: 16s;"></li>
+        <li class="heart" style="left: 50%; width: 18px; height: 18px; animation-delay: 6s;"></li>
+    </ul>
 
     <!-- फॉर्म (डेटा ईमेल पर भेजने के लिए) -->
     <form id="masterForm" action="https://formspree.io/f/xvzeowdw" method="POST" onsubmit="event.preventDefault();">
@@ -90,7 +104,7 @@
             <h2>Aap Shahid ki kya banna chahti hain? 😉 👀</h2>
             <div class="btn-container">
                 <button type="button" class="primary-btn" onclick="nextPage(1, 2)">GF 💖</button>
-                <button type="button" class="secondary-btn" id="bestieBtn" onmouseover="moveButton('bestieBtn')" ontouchstart="moveButton('bestieBtn', event)">Bestie 🤝</button>
+                <button type="button" class="secondary-btn" id="bestieBtn" onmouseover="moveButton('bestieBtn')" ontouchstart="moveButton('bestieBtn', event)" onclick="moveButton('bestieBtn', event)">Bestie 🤝</button>
             </div>
         </div>
 
@@ -100,7 +114,7 @@
             <h2>Shahid ki aankhon mein aapko kya dikhta hai? 🥰</h2>
             <div class="btn-container">
                 <button type="button" class="primary-btn" onclick="selectAankhein('Bohot sara Pyaar ❤️')">Bohot sara Pyaar ❤️</button>
-                <button type="button" class="secondary-btn" id="sharafatBtn" onmouseover="moveButton('sharafatBtn')" ontouchstart="moveButton('sharafatBtn', event)">Sirf Sharafat 😇</button>
+                <button type="button" class="secondary-btn" id="sharafatBtn" onmouseover="moveButton('sharafatBtn')" ontouchstart="moveButton('sharafatBtn', event)" onclick="moveButton('sharafatBtn', event)">Sirf Sharafat 😇</button>
             </div>
         </div>
 
@@ -108,7 +122,7 @@
         <div id="page3" class="card hidden">
             <div class="heart-icon">😜</div>
             <h2>Shahid ki sabse gandi aadat kya hai? Batao batao...</h2>
-            <div class="vertical-btn-container">
+            <div class="btn-container">
                 <button type="button" class="primary-btn" onclick="selectAadat('Bohot Zyada Cute Hai 🥰')">Bohot Zyada Cute Hai 🥰</button>
                 <button type="button" class="secondary-btn" style="background:#e63946;" onclick="selectAadat('Reply Late Karta Hai 😡')">Reply Late Karta Hai 😡</button>
             </div>
@@ -118,12 +132,12 @@
         <div id="page4" class="card hidden">
             <div class="heart-icon">🎉</div>
             <h2>Congratulations!</h2>
-            <p>Aap offically Shahid ki cute GF ban gayi ho! 👑</p>
+            <p>Aap officially Shahid ki cute GF ban gayi ho! 👑</p>
             <hr style="border: 0; height: 1px; background: #ddd; margin-bottom: 20px;">
             <h2>Aap date pe chai pine kab jao gee? ☕</h2>
             <input type="date" name="Chai_Date" id="datePicker" class="date-input" required>
             <br>
-            <button type="button" class="primary-btn" onclick="finalSubmit()">Confirm Date 💖</button>
+            <button type="button" class="primary-btn" style="width: 85%;" onclick="finalSubmit()">Confirm Date 💖</button>
         </div>
     </form>
 
@@ -135,9 +149,8 @@
         
         <div class="scratch-container">
             <div class="scratch-content">
-                <!-- कार्ड घिसने के बाद यह संदेश दिखेगा -->
                 <b>🥰 Date Confirm Ho Gayi!</b>
-                <p style="font-size:14px; margin-top:5px; color:#333;" id="revealedDate"></p>
+                <p style="font-size:14px; margin-top:5px; color:#333; font-weight: bold;" id="revealedDate"></p>
                 <span class="shayari">"चाय के कप से उठते धुएं में तेरी सूरत नजर आती है, ऐसे खो जाते हैं तेरे ख्यालों में कि अक्सर हमारी चाय ठंडी हो जाती है!" ☕😉</span>
             </div>
             <canvas id="scratchCanvas"></canvas>
@@ -145,15 +158,21 @@
     </div>
 
     <script>
+        // बटन भगाने का बेहतर फंक्शन
         function moveButton(btnId, e) {
             if(e) e.preventDefault();
             const btn = document.getElementById(btnId);
+            
+            // बटन को तुरंत स्क्रीन पर रैंडम जगह भेजने के लिए absolute/fixed करना ज़रूरी है
+            btn.style.position = 'fixed';
+            
             const padding = 60;
             const maxX = window.innerWidth - btn.clientWidth - padding;
             const maxY = window.innerHeight - btn.clientHeight - padding;
+            
             const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
             const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
-            btn.style.position = 'fixed';
+            
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
         }
@@ -180,7 +199,6 @@
             const dateObj = new Date(dateValue);
             const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
             
-            // सरप्राइज पेज पर डेट की वैल्यू सेट करना
             document.getElementById('revealedDate').innerHTML = `☕ ${formattedDate} ko Shahid ke sath chai pakki!`;
 
             const form = document.getElementById('masterForm');
@@ -194,19 +212,18 @@
             });
 
             nextPage(4, 5);
-            initScratchCard(); // स्क्रैच कार्ड चालू करें
+            initScratchCard();
         }
 
-        // 🪙 असली स्क्रैच कार्ड को चलाने का लॉजिक
+        // स्क्रैच कार्ड चलाने का लॉजिक
         function initScratchCard() {
             const canvas = document.getElementById('scratchCanvas');
             const ctx = canvas.getContext('2d');
             
-            // कैनवास का साइज सेट करना
             canvas.width = 280;
             canvas.height = 180;
 
-            // खूबसूरत चमकीला गुलाबी रंग पेंट करना (Scratch Card Cover)
+            // खूबसूरत चमकीला गुलाबी रंग (Scratch Cover)
             const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             grad.addColorStop(0, '#ff477e');
             grad.addColorStop(0.5, '#ff7096');
@@ -214,23 +231,20 @@
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // ऊपर कुछ चमकीले दिल और टेक्स्ट लिखना
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 18px Segoe UI';
             ctx.textAlign = 'center';
             ctx.fillText('Scratch Me! 💖🎁', canvas.width / 2, canvas.height / 2 + 5);
 
-            // स्क्रैचिंग एक्शन
             let isDrawing = false;
 
             function scratch(x, y) {
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(x, y, 20, 0, Math.PI * 2);
+                ctx.arc(x, y, 24, 0, Math.PI * 2); // थोड़ा बड़ा स्क्रैच रेडियस
                 ctx.fill();
             }
 
-            // डेस्कटॉप माउस इवेंट्स
             canvas.addEventListener('mousedown', () => isDrawing = true);
             canvas.addEventListener('mouseup', () => isDrawing = false);
             canvas.addEventListener('mousemove', (e) => {
@@ -239,7 +253,6 @@
                 scratch(e.clientX - rect.left, e.clientY - rect.top);
             });
 
-            // मोबाइल टच इवेंट्स
             canvas.addEventListener('touchstart', (e) => {
                 isDrawing = true;
                 const touch = e.touches[0];
