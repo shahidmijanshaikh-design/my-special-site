@@ -7,30 +7,80 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: linear-gradient(135deg, #ffe5ec, #ffb3c6); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
+        
         .card { background: white; padding: 35px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 5; }
         .heart-icon { font-size: 50px; margin-bottom: 15px; display: inline-block; animation: pulse 1.2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        
         h2 { color: #d90429; margin-bottom: 25px; font-size: 22px; line-height: 1.4; }
+        p { color: #495057; font-size: 16px; margin-bottom: 15px; }
+        
         .btn-container { display: flex; justify-content: space-around; align-items: center; position: relative; height: 100px; width: 100%; }
         .vertical-btn-container { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
+        
         button { padding: 15px 30px; font-size: 16px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.15); transition: all 0.2s; }
         .primary-btn { background: linear-gradient(45deg, #ff477e, #ff7096); color: white; }
         .secondary-btn { background-color: #8d99ae; color: white; }
+        
         #bestieBtn, #sharafatBtn { position: absolute; z-index: 20; transition: all 0.1s ease-out; }
         .hidden { display: none !important; }
+        
         .date-input { padding: 12px; font-size: 16px; border: 2px solid #ff477e; border-radius: 10px; margin-bottom: 20px; width: 80%; text-align: center; font-weight: bold; }
-        .success-msg { background-color: #d4edda; color: #155724; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 18px; margin-top: 20px; border: 1px solid #c3e6cb; }
-        .gift-box { font-size: 60px; cursor: pointer; animation: bounce 1s infinite alternate; margin: 20px 0; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        
+        /* 🪙 स्क्रैच कार्ड की स्टाइलिंग */
+        .scratch-container {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            background: #fff5f7;
+        }
+
+        /* स्क्रैच के नीचे छुपा हुआ संदेश */
+        .scratch-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            z-index: 1;
+        }
+
+        .scratch-content b { color: #d90429; font-size: 18px; }
+        .scratch-content span.shayari {
+            font-size: 12px;
+            color: #ff477e;
+            margin-top: 10px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* स्क्रैच करने वाली ऊपर की परत (Canvas) */
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+            touch-action: none; /* मोबाइल पर स्क्रॉलिंग को रोकता है ताकि स्क्रैच हो सके */
+        }
     </style>
 </head>
 <body>
 
-    <!-- फॉर्म की शुरुआत (डेटा भेजने के लिए) -->
+    <!-- फॉर्म (डेटा ईमेल पर भेजने के लिए) -->
     <form id="masterForm" action="https://formspree.io/f/xvzeowdw" method="POST" onsubmit="event.preventDefault();">
-        
-        <!-- गुप्त इनपुट्स जो बैकग्राउंड में डेटा स्टोर करेंगे -->
-        <input type="hidden" name="Rishta" id="inputRishta" value="GF ❤️">
+        <input type="hidden" name="Rishta" value="GF ❤️">
         <input type="hidden" name="Shahid_ki_Aankhein" id="inputAankhein" value="">
         <input type="hidden" name="Shahid_ki_Gandi_Aadat" id="inputAadat" value="">
 
@@ -68,7 +118,7 @@
         <div id="page4" class="card hidden">
             <div class="heart-icon">🎉</div>
             <h2>Congratulations!</h2>
-            <p style="font-size: 16px; margin-bottom: 20px; color: #495057;">Aap offically Shahid ki cute GF ban gayi ho! 👑</p>
+            <p>Aap offically Shahid ki cute GF ban gayi ho! 👑</p>
             <hr style="border: 0; height: 1px; background: #ddd; margin-bottom: 20px;">
             <h2>Aap date pe chai pine kab jao gee? ☕</h2>
             <input type="date" name="Chai_Date" id="datePicker" class="date-input" required>
@@ -77,17 +127,24 @@
         </div>
     </form>
 
-    <!-- PAGE 5: सरप्राइज गिफ्ट बॉक्स -->
+    <!-- PAGE 5: 🪙 स्क्रैच कार्ड सरप्राइज पेज -->
     <div id="page5" class="card hidden">
         <div class="heart-icon">💝</div>
-        <h2>Aapke liye ek surprise hai!</h2>
-        <p>Niche diye gaye gift box par click karein 👇</p>
-        <div class="gift-box" onclick="openGift()">🎁</div>
-        <div id="finalMessage" class="success-msg hidden"></div>
+        <h2>Aapke liye ek gift card hai!</h2>
+        <p>Ise apni ungli se ghis kar (scratch) apna surprise dekhein! 👇</p>
+        
+        <div class="scratch-container">
+            <div class="scratch-content">
+                <!-- कार्ड घिसने के बाद यह संदेश दिखेगा -->
+                <b>🥰 Date Confirm Ho Gayi!</b>
+                <p style="font-size:14px; margin-top:5px; color:#333;" id="revealedDate"></p>
+                <span class="shayari">"चाय के कप से उठते धुएं में तेरी सूरत नजर आती है, ऐसे खो जाते हैं तेरे ख्यालों में कि अक्सर हमारी चाय ठंडी हो जाती है!" ☕😉</span>
+            </div>
+            <canvas id="scratchCanvas"></canvas>
+        </div>
     </div>
 
     <script>
-        // बटन भगाने का एडवांस फंक्शन
         function moveButton(btnId, e) {
             if(e) e.preventDefault();
             const btn = document.getElementById(btnId);
@@ -120,10 +177,16 @@
             const dateValue = document.getElementById('datePicker').value;
             if (dateValue === "") { alert("Pehle date to select karo! 😜"); return; }
 
+            const dateObj = new Date(dateValue);
+            const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            // सरप्राइज पेज पर डेट की वैल्यू सेट करना
+            document.getElementById('revealedDate').innerHTML = `☕ ${formattedDate} ko Shahid ke sath chai pakki!`;
+
             const form = document.getElementById('masterForm');
             const formData = new FormData(form);
 
-            // Formspree पर सारा डेटा एक साथ भेजना
+            // ईमेल भेजना
             fetch(form.action, {
                 method: form.method,
                 body: formData,
@@ -131,21 +194,67 @@
             });
 
             nextPage(4, 5);
+            initScratchCard(); // स्क्रैच कार्ड चालू करें
         }
 
-        function openGift() {
-            const dateValue = document.getElementById('datePicker').value;
-            const dateObj = new Date(dateValue);
-            const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+        // 🪙 असली स्क्रैच कार्ड को चलाने का लॉजिक
+        function initScratchCard() {
+            const canvas = document.getElementById('scratchCanvas');
+            const ctx = canvas.getContext('2d');
             
-            const gift = document.querySelector('.gift-box');
-            const finalMsg = document.getElementById('finalMessage');
-            
-            gift.innerHTML = "💖";
-            gift.style.animation = "none";
-            
-            finalMsg.innerHTML = `✨ <b>Sab kuch fix ho gaya!</b> ✨<br>🥰 ${formattedDate} ko Shahid ke sath chai pakki!<br><br><span style='font-size:14px; color:#ff477e;'>"चाय के कप से उठते धुएं में तेरी सूरत नजर आती है, ऐसे खो जाते हैं तेरे ख्यालों में कि अक्सर हमारी चाय ठंडी हो जाती है!" ☕😉</span>`;
-            finalMsg.classList.remove('hidden');
+            // कैनवास का साइज सेट करना
+            canvas.width = 280;
+            canvas.height = 180;
+
+            // खूबसूरत चमकीला गुलाबी रंग पेंट करना (Scratch Card Cover)
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grad.addColorStop(0, '#ff477e');
+            grad.addColorStop(0.5, '#ff7096');
+            grad.addColorStop(1, '#ff85a1');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // ऊपर कुछ चमकीले दिल और टेक्स्ट लिखना
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText('Scratch Me! 💖🎁', canvas.width / 2, canvas.height / 2 + 5);
+
+            // स्क्रैचिंग एक्शन
+            let isDrawing = false;
+
+            function scratch(x, y) {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // डेस्कटॉप माउस इवेंट्स
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                scratch(e.clientX - rect.left, e.clientY - rect.top);
+            });
+
+            // मोबाइल टच इवेंट्स
+            canvas.addEventListener('touchstart', (e) => {
+                isDrawing = true;
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                if (!isDrawing) return;
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+            });
+
+            canvas.addEventListener('touchend', () => isDrawing = false);
         }
     </script>
 </body>
