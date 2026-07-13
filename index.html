@@ -5,57 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Special Question For You ❤️</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: linear-gradient(135deg, #ffe5ec, #ffb3c6); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
-        .card { background: white; padding: 40px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 5; }
+        .card { background: white; padding: 35px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 5; }
         .heart-icon { font-size: 50px; margin-bottom: 15px; display: inline-block; animation: pulse 1.2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
-        h2 { color: #d90429; margin-bottom: 30px; font-size: 24px; }
+        h2 { color: #d90429; margin-bottom: 25px; font-size: 22px; line-height: 1.4; }
         .btn-container { display: flex; justify-content: space-around; align-items: center; position: relative; height: 100px; width: 100%; }
-        button { padding: 15px 35px; font-size: 18px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.15); }
-        #gfBtn { background: linear-gradient(45deg, #ff477e, #ff7096); color: white; z-index: 10; }
-        #bestieBtn { background-color: #8d99ae; color: white; z-index: 20; transition: all 0.1s ease-out; }
+        .vertical-btn-container { display: flex; flex-direction: column; gap: 15px; width: 100%; margin-top: 10px; }
+        button { padding: 15px 30px; font-size: 16px; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.15); transition: all 0.2s; }
+        .primary-btn { background: linear-gradient(45deg, #ff477e, #ff7096); color: white; }
+        .secondary-btn { background-color: #8d99ae; color: white; }
+        #bestieBtn, #sharafatBtn { position: absolute; z-index: 20; transition: all 0.1s ease-out; }
         .hidden { display: none !important; }
         .date-input { padding: 12px; font-size: 16px; border: 2px solid #ff477e; border-radius: 10px; margin-bottom: 20px; width: 80%; text-align: center; font-weight: bold; }
         .success-msg { background-color: #d4edda; color: #155724; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 18px; margin-top: 20px; border: 1px solid #c3e6cb; }
+        .gift-box { font-size: 60px; cursor: pointer; animation: bounce 1s infinite alternate; margin: 20px 0; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
 
-    <!-- Page 1: द सवाल -->
-    <div id="page1" class="card">
-        <div class="heart-icon">❤️</div>
-        <h2>Aap Shahid ki kya banna chahti hain? 😉 👀</h2>
-        <div class="btn-container">
-            <button id="gfBtn" onclick="selectGf()">GF 💖</button>
-            <button id="bestieBtn" onmouseover="moveButton()" ontouchstart="moveButton(event)" onclick="moveButton(event)">Bestie 🤝</button>
-        </div>
-    </div>
+    <!-- फॉर्म की शुरुआत (डेटा भेजने के लिए) -->
+    <form id="masterForm" action="https://formspree.io/f/xvzeowdw" method="POST" onsubmit="event.preventDefault();">
+        
+        <!-- गुप्त इनपुट्स जो बैकग्राउंड में डेटा स्टोर करेंगे -->
+        <input type="hidden" name="Rishta" id="inputRishta" value="GF ❤️">
+        <input type="hidden" name="Shahid_ki_Aankhein" id="inputAankhein" value="">
+        <input type="hidden" name="Shahid_ki_Gandi_Aadat" id="inputAadat" value="">
 
-    <!-- Page 2: डेट फिक्सिंग -->
-    <div id="page2" class="card hidden">
-        <div class="heart-icon">🎉</div>
-        <h2>Congratulations!</h2>
-        <p style="font-size: 18px; margin-bottom: 20px; color: #495057;">Aap Shahid ki official GF ban gayi ho! 🥰</p>
-        <hr style="border: 0; height: 1px; background: #ddd; margin-bottom: 20px;">
-        
-        <h2>Aap date pe chai pine kab jao gee? ☕</h2>
-        
-        <!-- गुप्त फॉर्म जो ईमेल भेजेगा -->
-        <form id="prankForm" action="https://formspree.io/f/xvzeowdw" method="POST" onsubmit="event.preventDefault(); fixDate();">
+        <!-- PAGE 1: पहला सवाल -->
+        <div id="page1" class="card">
+            <div class="heart-icon">❤️</div>
+            <h2>Aap Shahid ki kya banna chahti hain? 😉 👀</h2>
+            <div class="btn-container">
+                <button type="button" class="primary-btn" onclick="nextPage(1, 2)">GF 💖</button>
+                <button type="button" class="secondary-btn" id="bestieBtn" onmouseover="moveButton('bestieBtn')" ontouchstart="moveButton('bestieBtn', event)">Bestie 🤝</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: दूसरा सवाल (रोमांटिक ट्विस्ट) -->
+        <div id="page2" class="card hidden">
+            <div class="heart-icon">👀</div>
+            <h2>Shahid ki aankhon mein aapko kya dikhta hai? 🥰</h2>
+            <div class="btn-container">
+                <button type="button" class="primary-btn" onclick="selectAankhein('Bohot sara Pyaar ❤️')">Bohot sara Pyaar ❤️</button>
+                <button type="button" class="secondary-btn" id="sharafatBtn" onmouseover="moveButton('sharafatBtn')" ontouchstart="moveButton('sharafatBtn', event)">Sirf Sharafat 😇</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: तीसरा सवाल (शिकायत) -->
+        <div id="page3" class="card hidden">
+            <div class="heart-icon">😜</div>
+            <h2>Shahid ki sabse gandi aadat kya hai? Batao batao...</h2>
+            <div class="vertical-btn-container">
+                <button type="button" class="primary-btn" onclick="selectAadat('Bohot Zyada Cute Hai 🥰')">Bohot Zyada Cute Hai 🥰</button>
+                <button type="button" class="secondary-btn" style="background:#e63946;" onclick="selectAadat('Reply Late Karta Hai 😡')">Reply Late Karta Hai 😡</button>
+            </div>
+        </div>
+
+        <!-- PAGE 4: डेट फिक्सिंग -->
+        <div id="page4" class="card hidden">
+            <div class="heart-icon">🎉</div>
+            <h2>Congratulations!</h2>
+            <p style="font-size: 16px; margin-bottom: 20px; color: #495057;">Aap offically Shahid ki cute GF ban gayi ho! 👑</p>
+            <hr style="border: 0; height: 1px; background: #ddd; margin-bottom: 20px;">
+            <h2>Aap date pe chai pine kab jao gee? ☕</h2>
             <input type="date" name="Chai_Date" id="datePicker" class="date-input" required>
             <br>
-            <button type="submit" id="gfBtn">Confirm Date 💖</button>
-        </form>
-        
+            <button type="button" class="primary-btn" onclick="finalSubmit()">Confirm Date 💖</button>
+        </div>
+    </form>
+
+    <!-- PAGE 5: सरप्राइज गिफ्ट बॉक्स -->
+    <div id="page5" class="card hidden">
+        <div class="heart-icon">💝</div>
+        <h2>Aapke liye ek surprise hai!</h2>
+        <p>Niche diye gaye gift box par click karein 👇</p>
+        <div class="gift-box" onclick="openGift()">🎁</div>
         <div id="finalMessage" class="success-msg hidden"></div>
     </div>
 
     <script>
-        function moveButton(e) {
+        // बटन भगाने का एडवांस फंक्शन
+        function moveButton(btnId, e) {
             if(e) e.preventDefault();
-            const btn = document.getElementById('bestieBtn');
-            const padding = 50;
+            const btn = document.getElementById(btnId);
+            const padding = 60;
             const maxX = window.innerWidth - btn.clientWidth - padding;
             const maxY = window.innerHeight - btn.clientHeight - padding;
             const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
@@ -65,30 +101,50 @@
             btn.style.top = randomY + 'px';
         }
 
-        function selectGf() {
-            document.getElementById('page1').classList.add('hidden');
-            document.getElementById('page2').classList.remove('hidden');
+        function nextPage(current, next) {
+            document.getElementById(`page${current}`).classList.add('hidden');
+            document.getElementById(`page${next}`).classList.remove('hidden');
         }
 
-        function fixDate() {
-            const dateValue = document.getElementById('datePicker').value;
-            const finalMsg = document.getElementById('finalMessage');
-            const form = document.getElementById('prankForm');
-            
-            const dateObj = new Date(dateValue);
-            const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+        function selectAankhein(val) {
+            document.getElementById('inputAankhein').value = val;
+            nextPage(2, 3);
+        }
 
-            // चुपके से Formspree पर डेटा भेजना
+        function selectAadat(val) {
+            document.getElementById('inputAadat').value = val;
+            nextPage(3, 4);
+        }
+
+        function finalSubmit() {
+            const dateValue = document.getElementById('datePicker').value;
+            if (dateValue === "") { alert("Pehle date to select karo! 😜"); return; }
+
+            const form = document.getElementById('masterForm');
             const formData = new FormData(form);
+
+            // Formspree पर सारा डेटा एक साथ भेजना
             fetch(form.action, {
                 method: form.method,
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             });
 
-            // स्क्रीन पर सक्सेस मैसेज दिखाना
-            form.classList.add('hidden');
-            finalMsg.innerHTML = `✅ Confirm ho gaya! <br> 🥰 ${formattedDate} ko Shahid ke sath chai pakki! ☕`;
+            nextPage(4, 5);
+        }
+
+        function openGift() {
+            const dateValue = document.getElementById('datePicker').value;
+            const dateObj = new Date(dateValue);
+            const formattedDate = dateObj.toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            const gift = document.querySelector('.gift-box');
+            const finalMsg = document.getElementById('finalMessage');
+            
+            gift.innerHTML = "💖";
+            gift.style.animation = "none";
+            
+            finalMsg.innerHTML = `✨ <b>Sab kuch fix ho gaya!</b> ✨<br>🥰 ${formattedDate} ko Shahid ke sath chai pakki!<br><br><span style='font-size:14px; color:#ff477e;'>"चाय के कप से उठते धुएं में तेरी सूरत नजर आती है, ऐसे खो जाते हैं तेरे ख्यालों में कि अक्सर हमारी चाय ठंडी हो जाती है!" ☕😉</span>`;
             finalMsg.classList.remove('hidden');
         }
     </script>
