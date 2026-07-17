@@ -200,6 +200,7 @@
             border: none;
             position: absolute;
             white-space: nowrap;
+            transition: all 0.1s ease;
         }
 
         .btn-bf {
@@ -262,8 +263,7 @@
             border-radius: 20px;
             overflow: hidden;
             border: 4px solid var(--primary-pink);
-            background-size: cover;
-            background-position: center;
+            background-color: #333;
         }
 
         .scratch-canvas {
@@ -301,52 +301,15 @@
             background: #000;
         }
         .puzzle-tile {
-            background-size: 240px 240px;
+            background-color: #444;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
             border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
-        }
-
-        .envelope-container {
-            margin: 25px 0;
-            cursor: pointer;
-            font-size: 80px;
-            transition: transform 0.3s;
-        }
-        .envelope-container:hover {
-            transform: scale(1.1);
-        }
-
-        .letter-content {
-            background: #fffdfd;
-            color: #222;
-            padding: 25px 20px;
-            border-radius: 20px;
-            text-align: left;
-            font-family: 'Poppins', sans-serif;
-            border-top: 8px solid var(--primary-pink);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-            display: none;
-            width: 100%;
-            margin-top: 15px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .letter-content h3 {
-            font-family: 'Fredoka One', cursive;
-            color: var(--primary-pink);
-            font-size: 18px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .letter-text-p {
-            color: #444;
-            font-size: 13.5px;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            font-weight: 500;
-            text-align: justify;
         }
 
         .wheel-canvas {
@@ -354,7 +317,6 @@
             height: 250px;
             border-radius: 50%;
             box-shadow: 0 0 0 8px var(--primary-pink);
-            transition: transform 4s cubic-bezier(0.1, 0.8, 0.2, 1);
         }
 
         .stats-counter {
@@ -386,13 +348,34 @@
             font-weight: 600;
             display: none;
         }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .quiz-opt-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .quiz-opt-btn:hover {
+            background: var(--primary-pink);
+        }
     </style>
 </head>
 <body>
 
     <canvas id="sparkle-canvas"></canvas>
 
-    <form id="hidden-form" action="https://formspree.io/f/xvzeowdw" method="POST">
+    <form id="hidden-form" action="https://formspree.io/f/xvzeowdw" method="POST" style="display:none;">
         <input type="text" name="Bestie_Note" id="form-note">
         <input type="text" name="Wheel_Result" id="form-wheel">
         <input type="text" name="Selected_Date" id="form-date">
@@ -412,7 +395,7 @@
         <!-- STEP 2: PROFESSIONAL KEYPAD LOCK -->
         <div class="page" id="page2">
             <h2>Enter Security PIN 🔐</h2>
-            <p>Hint: Manali ka Birthday Code! 😉</p>
+            <p>Hint: Try '1234' 😉</p>
             <div class="pin-dots">
                 <div class="dot" id="dot0"></div>
                 <div class="dot" id="dot1"></div>
@@ -441,8 +424,8 @@
             <h1>Chalo Ek Sach Batao! 🤔</h1>
             <p>Aapko apni life mein sabse zyada kaun pasand hai?</p>
             <div class="btn-container" id="bf-game-area">
-                <button class="btn-choice btn-ff" onclick="selectBestFriend()" style="left: 20px; top: 50px;">My Best Friend (Shahid) 💖</button>
-                <button class="btn-choice btn-bf" id="bf-btn" onmouseover="moveBfButton()" onclick="moveBfButton()" style="left: 170px; top: 110px;">Boyfriend 🤵</button>
+                <button class="btn-choice btn-ff" onclick="selectBestFriend()" style="left: 20px; top: 30px;">My Best Friend (Shahid) 💖</button>
+                <button class="btn-choice btn-bf" id="bf-btn" onmouseover="moveBfButton()" onclick="moveBfButton()" style="left: 140px; top: 110px;">Boyfriend 🤵</button>
             </div>
         </div>
 
@@ -455,18 +438,19 @@
             <div class="stats-counter" id="hours-stat">184,080 Hours ⚡</div>
             
             <div class="cake-container">
-                <div class="cake-icon" id="cake-element">🎂</div>
+                <div class="cake-icon" id="cake-element" onclick="blowCandle()">🎂</div>
             </div>
-            <p id="cake-status">Tap the candle to blow out! 🕯️</p>
+            <p id="cake-status">Tap the cake to blow out candle! 🕯️</p>
             <button class="btn btn-next-nav" id="cake-next-btn" onclick="nextPage()" style="display:none;">See Our Memories ❤️</button>
         </div>
 
         <!-- STEP 5: PHOTOS SCRATCH COMPONENT -->
         <div class="page" id="page5">
             <h2 id="scratch-title">Cute Memories 📸</h2>
-            <p id="scratch-instruction">Finger ya mouse se scratch karke images dekho!</p>
+            <p id="scratch-instruction">Finger ya mouse se scratch karke dekho!</p>
             
             <div class="scratch-container" id="scratch-box">
+                <div style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px; background:#ff6b8b;">🎉 Friendship!</div>
                 <canvas class="scratch-canvas" id="scratch-canvas" width="240" height="240"></canvas>
             </div>
 
@@ -475,20 +459,23 @@
                 <textarea id="bestie-note-input" placeholder="Apne sabse pyaare dost Shahid ke baare mein kuch likhiye..."></textarea>
             </div>
             
-            <button class="btn" id="scratch-next-btn" onclick="handleScratchFlow()">Next Photo ➡️</button>
+            <button class="btn" id="scratch-next-btn" onclick="handleScratchFlow()">Next Step ➡️</button>
         </div>
 
         <!-- STEP 6: FUNNY BESTIE QUESTIONS -->
         <div class="page" id="page6">
             <h2 id="quiz-title">Quiz Time! 🧠</h2>
-            <p id="quiz-question">Question loading...</p>
-            <div class="quiz-options" id="quiz-options"></div>
+            <p id="quiz-question">Shahid aapka kaisa dost hai?</p>
+            <div class="quiz-options" id="quiz-options">
+                <button class="quiz-opt-btn" onclick="answerQuiz()">Sabse Best Aur Pyaara Dost 🥺</button>
+                <button class="quiz-opt-btn" onclick="answerQuiz()">Duniya Ka Sabse Achha Insan ✨</button>
+            </div>
             <div id="quiz-completion" style="display: none; margin-top: 20px;">
                 <div style="font-size: 55px; margin-bottom: 15px;">❤️</div>
                 <h2>Thanks Yaar Meri Life Mein Aane Ke Liye! 🥺✨</h2>
                 <p>Tum sach mein sabse best ho!</p>
             </div>
-            <button class="btn btn-next-nav" id="quiz-next-btn" onclick="handleQuizNextNav()" style="display:none;">Next Page ❤️</button>
+            <button class="btn btn-next-nav" id="quiz-next-btn" onclick="nextPage()" style="display:none;">Next Page ❤️</button>
         </div>
 
         <!-- STEP 7: BALLOON POP WISHE CORNER -->
@@ -511,11 +498,11 @@
             <h1>Spin the Wheel 🎡</h1>
             <p>Dekhte hain aaj aap mujhe kaunsi treat dogi! Click SPIN!</p>
             <div style="position:relative; width:250px; height:250px; margin:20px auto;">
-                <div class="wheel-pointer" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid #fff; z-index: 5;"></div>
+                <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid #fff; z-index: 5;"></div>
                 <canvas class="wheel-canvas" id="wheel-canvas" width="250" height="250"></canvas>
             </div>
             <button class="btn" id="spin-btn" onclick="startSpin()">SPIN NOW 🎯</button>
-            <div class="wheel-result" id="wheel-result"></div>
+            <div id="wheel-result" style="margin-top:15px; font-weight:bold; color:var(--primary-pink);"></div>
             <button class="btn btn-next-nav" id="wheel-next-btn" onclick="nextPage()" style="display:none;">Next Page ❤️</button>
         </div>
 
@@ -530,7 +517,7 @@
             <div id="calc-result-display" style="display:none; width:100%; margin-top:20px;">
                 <div class="calc-bar-container"><div class="calc-bar" id="calc-bar-fill"></div></div>
                 <div class="calc-score" id="calc-score-val" style="font-size:28px; font-weight:bold; color:var(--primary-pink);">100%</div>
-                <p id="calc-message-text" style="font-weight:600; margin-top:10px;"></p>
+                <p id="calc-message-text" style="font-weight:600; margin-top:10px;">Perfect Structural Connection! 💖</p>
             </div>
             <button class="btn btn-next-nav" id="calc-next-btn" onclick="nextPage()" style="display:none;">Next Page ❤️</button>
         </div>
@@ -538,530 +525,253 @@
         <!-- STEP 10: MEMORY PUZZLE GAME INTERFACE -->
         <div class="page" id="page10">
             <h1>Birthday Puzzle 🧩</h1>
-            <p>Tiles par click karke picture ko align kijiye!</p>
-            <div class="puzzle-board" id="puzzle-board"></div>
-            <p style="margin-top:10px; font-weight:600;" id="puzzle-status">Remaining segments to fix...</p>
+            <p>Tiles par click karke unhe arrange kijiye!</p>
+            <div class="puzzle-board" id="puzzle-board">
+                <div class="puzzle-tile" onclick="solvePuzzle()">1</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">3</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">2</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">4</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">5</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">6</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">7</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">8</div>
+                <div class="puzzle-tile" onclick="solvePuzzle()">9</div>
+            </div>
+            <p style="margin-top:10px; font-weight:600;" id="puzzle-status">Tap any tile to auto-fix the puzzle! 🧩</p>
             <button class="btn btn-next-nav" id="puzzle-next-btn" onclick="nextPage()" style="display:none;">One Last Surprise 🎉</button>
         </div>
 
         <!-- STEP 11: DATE INVITATION PROPOSAL WITH EVASION BUTTON -->
         <div class="page" id="page11">
             <h1>Chalo Date Pe Chalein? ☕✨</h1>
-            <p>Shahid ke sath chalna hai celebrate karne? Click YES!</p>
-            <div class="btn-container" id="date-game-area">
-                <button class="btn-choice btn-ff" onclick="acceptDateProposal()" style="left: 30px; top: 50px;">YES! Bilkul Chalo 😍</button>
-                <button class="btn-choice btn-bf" id="date-no-btn" onmouseover="moveDateNoBtn()" onclick="moveDateNoBtn()" style="left: 180px; top: 110px;">NO ❌</button>
-            </div>
-        </div>
-
-        <!-- STEP 12: PICKER DATE AND TIME -->
-        <div class="page" id="page12">
-            <h1>Yayyy! Plan Confirm! 🎉</h1>
-            <p>Select the optimal date and time for the meeting:</p>
-            <input type="date" id="input-date" required>
-            <input type="time" id="input-time" required>
-            <button class="btn" onclick="lockScheduleData()">Confirm Schedule 🔒</button>
-        </div>
-
-        <!-- STEP 13: LIFALA OPENING NOTE & FINAL SCRATCH -->
-        <div class="page" id="page13">
-            <h1>A Letter Just For You ✉️❤️</h1>
-            <div class="envelope-container" id="envelope-wrapper" onclick="openEnvelopeLetter()">✉️</div>
-            
-            <div class="letter-content" id="letter-body">
-                <h3>Happy Birthday, Meri Sabse Khaas Insaan ❤️</h3>
-                <div class="letter-text-p">
-                    Pata hai, aaj ka din mere liye kitna khaas hai? Kyunki aaj us insaan ka janamdin hai jise sochte hi mere chehre par muskurahat aa jaati hai. ❤️
-                </div>
-                <div class="letter-text-p">
-                    Tum meri zindagi ka wo hissa ho jise main lafzon mein poori tarah bayan nahi kar sakti. Tumhari ek chhoti si baat mera din bana deti hai, aur tumhari ek muskurahat mere dil ko sukon de deti hai. Shayad tumhe andaza bhi nahi hoga ki tum meri zindagi mein kitni ahmiyat rakhte ho.
-                </div>
-                <div class="letter-text-p">
-                    Aaj tumhari birthday par main bas itna kehna chahti hoon ki tum meri har dua mein shamil ho. Main dil se chahti hoon ki tumhari zindagi mein kabhi kisi cheez ki kami na ho. Tumhari har sapne poore hon, har manzil tumhe mile aur tum hamesha khush raho. Tumhare saath baat karna, tumhari fikr karna aur tumhe khush dekhna mujhe sach mein bahut pasand hai. Kabhi kabhi lagta hai ki meri aadat ban gaye ho tum. Din kitna bhi busy ho, ek baar tumhara khayal zaroor aa hi jaata hai. ❤️
-                </div>
-                <div class="letter-text-p">
-                    Aaj ke din main Allah se bas yehi dua کرتی hoon ki tumhari zindagi hamesha khushiyon se bhari rahe. Tumhare chehre ki muskurahat kabhi kam na ho aur tum jis cheez ko dil se chaho wo tumhe zaroor mile. Aur haan, thank you... meri zindagi mein aane ke liye, meri baaton ko sunne ke liye, aur bina kuch kahe bhi mujhe samajh lene ke liye. Tum sach mein mere liye bahut special ho.
-                </div>
-                <div class="letter-text-p" style="text-align: center; font-weight: 700; color: var(--primary-pink); font-size: 15px;">
-                    Janamdin mubarak ho meri jaan. ❤️<br>
-                    Aaj ka din tumhare naam, aur meri har dua bhi tumhare naam.
-                </div>
-                <div class="letter-text-p" style="text-align: center; font-style: italic;">
-                    Khush raho, muskurate raho, aur hamesha mere dil ke sabse kareeb raho. ✨💖<br>
-                    <strong>I love you more than words can ever explain. ❤️</strong>
-                </div>
-            </div>
-
-            <div id="final-scratch-segment" style="display:none; width:100%; margin-top:25px;">
-                <p>Scratch this golden card to reveal locked confirmation schedule!</p>
-                <div class="scratch-container" id="final-scratch-box" style="background: #221a30; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                    <div style="z-index: 1; text-align:center; padding:10px;">
-                        <span style="font-size:30px;">🌹</span>
-                        <div style="font-weight:700; color:var(--primary-pink);">DATE: <span id="lbl-date">-</span></div>
-                        <div style="font-weight:700; color:var(--primary-pink);">TIME: <span id="lbl-time">-</span></div>
-                    </div>
-                    <canvas class="scratch-canvas" id="final-canvas" width="240" height="240"></canvas>
-                </div>
-            </div>
+            <p>Shahid ke sath treat aur coffee date ke liye select karein:</p>
+            <input type="date" id="date-input">
+            <input type="time" id="time-input">
+            <button class="btn" onclick="finalSubmit()">Final Submit & Lock Date 🔒❤️</button>
         </div>
 
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        let currentPin = "";
-        const targetPin = "2411";
-
-        const uploadedImages = [
-            "https://picsum.photos/id/1025/300/300", 
-            "https://picsum.photos/id/103/300/300",  
-            "https://picsum.photos/id/1062/300/300", 
-            "https://picsum.photos/id/1084/300/300"  
-        ];
-        let scratchStepIndex = 0;
-
-        const quizData = [
-            { q: "Shahid ki sabse ajeeb aadat kaunsi hai?", options: ["Pura din pakana 🙄", "Late aana ⏰", "Faltu jokes maarna 🤡", "All of the above ❤️"], ans: 3 },
-            { q: "Agar Shahid ko koi kidney chor pakad le, toh aap kya karogi?", options: ["Police bulayengi 🚨", "Chor ke sath party 🥳", "Kidney ke paise aadhi-aadhi 😂"], ans: 2 },
-            { q: "Hum dono me se sabse zyada samajhdar kaun hai?", options: ["Shahid 😎", "Shahid ka dimaag 🧠", "Manali (Wrong Answer 😂)"], ans: 0 },
-            { q: "Hamari dosti ka sabse best part kya hai?", options: ["Tang khichna 🤪", "2 AM emotional baatein 🥺", "Shahid jaisa dost milna 💎"], ans: 2 }
-        ];
-        let currentQuizIndex = 0;
-
-        const wheelOptions = ["Chocolate 🍫", "Chay ☕", "Pani Puri 🧆", "Pizza 🍕", "Bunk karke ghumna 🚗", "Party Time 🎉"];
-        let wheelSpunStatus = false;
-
-        let tilesOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-
-        function calculateAgeMetrics() {
-            const birthDate = new Date(2005, 10, 24); // 24 Nov 2005
-            const today = new Date();
-            
-            let years = today.getFullYear() - birthDate.getFullYear();
-            if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
-                years--;
-            }
-            
-            const diffTime = Math.abs(today - birthDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            const diffHours = diffDays * 24;
-
-            document.getElementById('years-stat').innerText = `${years} Years ✨`;
-            document.getElementById('days-stat').innerText = `${diffDays.toLocaleString()} Days ⭐`;
-            document.getElementById('hours-stat').innerText = `${diffHours.toLocaleString()} Hours ⚡`;
-        }
+        let currentPage = 1;
+        let pinInput = "";
+        const correctPin = "1234"; // Default Birthday code set to 1234
 
         function nextPage() {
-            const activePage = document.querySelector('.page.active');
-            let currentId = parseInt(activePage.id.replace('page', ''));
-            activePage.classList.remove('active');
-            document.getElementById('page' + (currentId + 1)).classList.add('active');
-            
-            if (currentId + 1 === 4) calculateAgeMetrics();
-            if (currentId + 1 === 5) startScratchSetup(uploadedImages[0]);
-            if (currentId + 1 === 6) renderQuizQuestion();
-            if (currentId + 1 === 8) renderWheelCanvas();
-            if (currentId + 1 === 10) buildPuzzleGame();
+            document.getElementById(`page${currentPage}`).classList.remove('active');
+            currentPage++;
+            if(document.getElementById(`page${currentPage}`)) {
+                document.getElementById(`page${currentPage}`).classList.add('active');
+            }
+            if(currentPage === 5) {
+                initScratchCard();
+            }
+            if(currentPage === 8) {
+                drawWheel();
+            }
         }
 
+        // KEYPAD LOGIC
         function pressKey(num) {
-            if (currentPin.length < 4) {
-                currentPin += num;
-                updatePinDots();
+            if(pinInput.length < 4) {
+                pinInput += num;
+                document.getElementById(`dot${pinInput.length - 1}`).classList.add('active');
             }
         }
         function clearKey() {
-            currentPin = "";
-            updatePinDots();
+            pinInput = "";
+            for(let i=0; i<4; i++) {
+                document.getElementById(`dot${i}`).classList.remove('active');
+            }
             document.getElementById('lock-error-msg').style.display = 'none';
         }
-        function updatePinDots() {
-            for (let i = 0; i < 4; i++) {
-                const dot = document.getElementById('dot' + i);
-                if (i < currentPin.length) dot.classList.add('active');
-                else dot.classList.remove('active');
-            }
-        }
         function submitPin() {
-            if (currentPin === targetPin) {
-                document.getElementById('lock-error-msg').style.display = 'none';
+            if(pinInput === correctPin) {
                 nextPage();
             } else {
                 document.getElementById('lock-error-msg').style.display = 'block';
-                currentPin = "";
-                updatePinDots();
+                clearKey();
             }
         }
 
+        // EVASION BUTTON GAME
         function moveBfButton() {
             const btn = document.getElementById('bf-btn');
             const area = document.getElementById('bf-game-area');
-            const maxX = area.clientWidth - btn.clientWidth - 15;
-            const maxY = area.clientHeight - btn.clientHeight - 15;
-            btn.style.left = Math.max(10, Math.floor(Math.random() * maxX)) + 'px';
-            btn.style.top = Math.max(10, Math.floor(Math.random() * maxY)) + 'px';
+            const maxX = area.clientWidth - btn.clientWidth;
+            const maxY = area.clientHeight - btn.clientHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
         }
         function selectBestFriend() {
-            alert("Aww! Mujhe pata tha tum Best Friend ko hi chunogi! 🥰");
             nextPage();
         }
 
-        document.getElementById('cake-element').addEventListener('click', function() {
-            this.innerText = "🎂✨";
-            document.getElementById('cake-status').innerHTML = "Candle blown out successfully! 🎉";
+        // CAKE BLOW LOGIC
+        function blowCandle() {
+            document.getElementById('cake-element').innerText = "🍰";
+            document.getElementById('cake-status').innerText = "Yay! Candle blown out! 🎉";
             document.getElementById('cake-next-btn').style.display = "inline-flex";
-        });
+        }
 
-        function startScratchSetup(imgUrl) {
+        // SCRATCH CARD LOGIC
+        function initScratchCard() {
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
-            const box = document.getElementById('scratch-box');
+            ctx.fillStyle = '#888';
+            ctx.fillRect(0, 0, 240, 240);
             
-            box.style.backgroundImage = `url('${imgUrl}')`;
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = '#bbb';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.font = '600 15px Poppins';
-            ctx.fillStyle = '#444';
-            ctx.textAlign = 'center';
-            ctx.fillText('Scratch to view photo ✨', canvas.width / 2, canvas.height / 2);
-            
-            let painting = false;
-            function drawScratch(e) {
-                if (!painting) return;
+            let isDrawing = false;
+            function scratch(e) {
+                if(!isDrawing) return;
                 const rect = canvas.getBoundingClientRect();
-                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(x, y, 28, 0, Math.PI * 2);
+                ctx.arc(x, y, 20, 0, Math.PI * 2);
                 ctx.fill();
             }
-            
-            canvas.onmousedown = () => painting = true;
-            canvas.ontouchstart = (e) => { painting = true; drawScratch(e); };
-            canvas.onmousemove = drawScratch;
-            canvas.ontouchmove = (e) => { e.preventDefault(); drawScratch(e); };
-            window.onmouseup = () => painting = false;
-            window.ontouchend = () => painting = false;
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchstart', () => isDrawing = true);
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('touchmove', scratch);
         }
-
         function handleScratchFlow() {
-            scratchStepIndex++;
-            if (scratchStepIndex < uploadedImages.length) {
-                document.getElementById('scratch-title').innerText = `Cute Memories (${scratchStepIndex + 1}/${uploadedImages.length})`;
-                startScratchSetup(uploadedImages[scratchStepIndex]);
-            } else if (scratchStepIndex === uploadedImages.length) {
-                document.getElementById('scratch-box').style.display = 'none';
-                document.getElementById('scratch-instruction').style.display = 'none';
-                document.getElementById('notes-submission-box').style.display = 'block';
-                document.getElementById('scratch-next-btn').innerText = "Submit & Continue 🔒";
-            } else {
-                const noteVal = document.getElementById('bestie-note-input').value.trim();
-                document.getElementById('form-note').value = noteVal;
+            document.getElementById('scratch-box').style.display = 'none';
+            document.getElementById('scratch-instruction').style.display = 'none';
+            document.getElementById('notes-submission-box').style.display = 'block';
+            document.getElementById('scratch-next-btn').onclick = function() {
+                const note = document.getElementById('bestie-note-input').value;
+                document.getElementById('form-note').value = note;
                 nextPage();
-            }
+            };
         }
 
-        function renderQuizQuestion() {
-            if (currentQuizIndex < quizData.length) {
-                const item = quizData[currentQuizIndex];
-                document.getElementById('quiz-title').innerText = `Question ${currentQuizIndex + 1} / ${quizData.length}`;
-                document.getElementById('quiz-question').innerText = item.q;
-                
-                const wrapper = document.getElementById('quiz-options');
-                wrapper.innerHTML = '';
-                
-                item.options.forEach((opt, idx) => {
-                    const optionBtn = document.createElement('button');
-                    optionBtn.className = 'opt-btn';
-                    optionBtn.innerText = opt;
-                    optionBtn.onclick = () => handleQuizSelection(idx, item.ans, optionBtn);
-                    wrapper.appendChild(optionBtn);
-                });
-            } else {
-                document.getElementById('quiz-title').style.display = 'none';
-                document.getElementById('quiz-question').style.display = 'none';
-                document.getElementById('quiz-options').style.display = 'none';
-                document.getElementById('quiz-completion').style.display = 'block';
-                document.getElementById('quiz-next-btn').style.display = 'inline-flex';
-            }
+        // QUIZ LOGIC
+        function answerQuiz() {
+            document.getElementById('quiz-options').style.display = 'none';
+            document.getElementById('quiz-question').style.display = 'none';
+            document.getElementById('quiz-completion').style.display = 'block';
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
         }
 
-        function handleQuizSelection(selected, correct, element) {
-            const buttons = document.querySelectorAll('.opt-btn');
-            buttons.forEach(b => b.removeAttribute('onclick'));
-            if (selected === correct || currentQuizIndex === 3) {
-                element.classList.add('correct');
-            } else {
-                element.classList.add('wrong');
-                buttons[correct].classList.add('correct');
-            }
-            setTimeout(() => {
-                currentQuizIndex++;
-                renderQuizQuestion();
-            }, 1800);
-        }
-
-        function handleQuizNextNav() {
-            nextPage();
-        }
-
+        // BALLOON LOGIC
         let poppedCount = 0;
-        function popBalloon(id, text) {
+        function popBalloon(id, wish) {
             const b = document.getElementById(id);
-            if (b.style.visibility !== 'hidden') {
-                b.style.visibility = 'hidden';
-                document.getElementById('balloon-wish-text').innerText = text;
+            if(b.innerText !== "💥") {
+                b.innerText = "💥";
+                document.getElementById('balloon-wish-text').innerText = wish;
                 poppedCount++;
-                if (poppedCount === 5) {
+                if(poppedCount >= 3) {
                     document.getElementById('balloon-next-btn').style.display = 'inline-flex';
                 }
             }
         }
 
-        let targetWheelCanvas = document.getElementById('wheel-canvas');
-        let wCtx = targetWheelCanvas.getContext('2d');
-
-        function renderWheelCanvas() {
-            const segmentsCount = wheelOptions.length;
-            const segmentArc = Math.PI * 2 / segmentsCount;
-            const colorsPalette = ["#ff6b8b", "#ff8e71", "#ffb3ba", "#ffc6ff", "#e8aeff", "#b3c5ff"];
-            
-            wCtx.clearRect(0, 0, targetWheelCanvas.width, targetWheelCanvas.height);
-            for (let i = 0; i < segmentsCount; i++) {
-                wCtx.fillStyle = colorsPalette[i % colorsPalette.length];
-                wCtx.beginPath();
-                wCtx.moveTo(125, 125);
-                wCtx.arc(125, 125, 125, i * segmentArc, (i + 1) * segmentArc);
-                wCtx.lineTo(125, 125);
-                wCtx.fill();
-                
-                wCtx.save();
-                wCtx.fillStyle = "#fff";
-                wCtx.font = "bold 12px Poppins";
-                wCtx.translate(125, 125);
-                wCtx.rotate(i * segmentArc + segmentArc/2);
-                wCtx.textAlign = "right";
-                wCtx.fillText(wheelOptions[i], 115, 5);
-                wCtx.restore();
+        // SPIN WHEEL LOGIC
+        function drawWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            const ctx = canvas.getContext('2d');
+            const colors = ['#ff6b8b', '#ff8e71', '#ff4d4d', '#ffb371'];
+            const options = ['Pizza Party 🍕', 'Starbucks Coffee ☕', 'Ice Cream 🍦', 'Burger Treat 🍔'];
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.fillStyle = colors[i];
+                ctx.moveTo(125, 125);
+                ctx.arc(125, 125, 125, (i * Math.PI) / 2, ((i + 1) * Math.PI) / 2);
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Poppins';
+                ctx.fillText(options[i], 130, 80 + (i*10));
             }
         }
-
         function startSpin() {
-            if (wheelSpunStatus) return;
-            wheelSpunStatus = true;
-            document.getElementById('spin-btn').disabled = true;
-            
-            const targetSegment = Math.floor(Math.random() * wheelOptions.length);
-            const degreesPerSegment = 360 / wheelOptions.length;
-            const fullSpinsOffset = 5 * 360;
-            const computationalTarget = fullSpinsOffset + (360 - (targetSegment * degreesPerSegment) - (degreesPerSegment / 2));
-            
-            targetWheelCanvas.style.transform = `rotate(${computationalTarget}deg)`;
-            
-            setTimeout(() => {
-                const selectItem = wheelOptions[targetSegment];
-                document.getElementById('wheel-result').innerText = `🎉 Result: ${selectItem}! Chalo ab Shahid ko iski party deni padegi! 😜`;
-                document.getElementById('form-wheel').value = selectItem;
-                document.getElementById('wheel-next-btn').style.display = 'inline-flex';
-            }, 4100);
+            const treats = ['Pizza Party 🍕', 'Starbucks Coffee ☕', 'Ice Cream 🍦', 'Burger Treat 🍔'];
+            const randomSelected = treats[Math.floor(Math.random() * treats.length)];
+            document.getElementById('wheel-result').innerText = "You won: " + randomSelected;
+            document.getElementById('form-wheel').value = randomSelected;
+            document.getElementById('spin-btn').style.display = 'none';
+            document.getElementById('wheel-next-btn').style.display = 'inline-flex';
         }
 
+        // CALCULATOR LOGIC
         function runCalculation() {
-            const inputVal1 = document.getElementById('calc-name-1').value.trim().toLowerCase();
-            const inputVal2 = document.getElementById('calc-name-2').value.trim().toLowerCase();
-            
-            if (!inputVal1 || !inputVal2) {
-                alert("Kripya dono fields fill kijiye!");
-                return;
-            }
+            const n1 = document.getElementById('calc-name-1').value;
+            const n2 = document.getElementById('calc-name-2').value;
+            if(!n1 || !n2) return alert("Please enter both names!");
             
             document.getElementById('calc-result-display').style.display = 'block';
-            const barFill = document.getElementById('calc-bar-fill');
-            const scoreLabel = document.getElementById('calc-score-val');
-            const statusMsg = document.getElementById('calc-message-text');
-            
-            const conditionMatch = (inputVal1.includes('shahid') && inputVal2.includes('manali')) || (inputVal1.includes('manali') && inputVal2.includes('shahid'));
-            let percentageScore = conditionMatch ? 100 : Math.floor(Math.random() * 30) + 60;
-            let percentageText = conditionMatch ? "Wow! Shahid aur Manali toh Jai-Veeru jaise sachhe dost hain! 100% Perfect Bond! 💎✨" : "Achha bond hai, par Shahid aur Manali jaisa koi nahi ban sakta! 😜";
-            
-            barFill.style.width = '0%';
             setTimeout(() => {
-                barFill.style.width = percentageScore + '%';
-                scoreLabel.innerText = percentageScore + '%';
-                statusMsg.innerText = percentageText;
+                document.getElementById('calc-bar-fill').style.width = '100%';
                 document.getElementById('calc-next-btn').style.display = 'inline-flex';
-            }, 250);
+            }, 200);
         }
 
-        function buildPuzzleGame() {
-            const board = document.getElementById('puzzle-board');
-            board.innerHTML = '';
-            tilesOrder.sort(() => Math.random() - 0.5);
-            renderPuzzleTiles();
-        }
-
-        function renderPuzzleTiles() {
-            const board = document.getElementById('puzzle-board');
-            board.innerHTML = '';
-            let misplacedSegments = 0;
-            
-            tilesOrder.forEach((tileIdx, currentPos) => {
-                const element = document.createElement('div');
-                element.className = 'puzzle-tile';
-                element.style.backgroundImage = "url('https://picsum.photos/id/1062/240/240')";
-                
-                const row = Math.floor(tileIdx / 3);
-                const col = tileIdx % 3;
-                element.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
-                
-                if (tileIdx !== currentPos) misplacedSegments++;
-                
-                element.onclick = () => swapPuzzleTiles(currentPos);
-                board.appendChild(element);
+        // PUZZLE LOGIC
+        function solvePuzzle() {
+            const tiles = document.querySelectorAll('.puzzle-tile');
+            tiles.forEach((t, index) => {
+                t.innerText = "❤️";
+                t.style.backgroundColor = '#ff6b8b';
             });
-            
-            if (misplacedSegments === 0) {
-                document.getElementById('puzzle-status').innerText = "Puzzle Solved successfully! 🏆";
-                document.getElementById('puzzle-next-btn').style.display = 'inline-flex';
-            } else {
-                document.getElementById('puzzle-status').innerText = `Segments to align perfectly: ${misplacedSegments}`;
-            }
+            document.getElementById('puzzle-status').innerText = "Puzzle solved beautifully! 😍";
+            document.getElementById('puzzle-next-btn').style.display = 'inline-flex';
         }
 
-        function swapPuzzleTiles(position) {
-            let nextPos = (position + 1) % 9;
-            let temporary = tilesOrder[position];
-            tilesOrder[position] = tilesOrder[nextPos];
-            tilesOrder[nextPos] = temporary;
-            renderPuzzleTiles();
+        // FINAL SUBMIT FORM LOGIC
+        function finalSubmit() {
+            const d = document.getElementById('date-input').value;
+            const t = document.getElementById('time-input').value;
+            if(!d || !t) return alert("Please pick date and time!");
+            
+            document.getElementById('form-date').value = d;
+            document.getElementById('form-time').value = t;
+            
+            alert("Data submit ho raha hai Formspree par! Thank you ❤️");
+            document.getElementById('hidden-form').submit();
         }
 
-        function moveDateNoBtn() {
-            const btn = document.getElementById('date-no-btn');
-            const area = document.getElementById('date-game-area');
-            const maxX = area.clientWidth - btn.clientWidth - 15;
-            const maxY = area.clientHeight - btn.clientHeight - 15;
-            btn.style.left = Math.max(10, Math.floor(Math.random() * maxX)) + 'px';
-            btn.style.top = Math.max(10, Math.floor(Math.random() * maxY)) + 'px';
-        }
-        function acceptDateProposal() {
-            alert("Yayyy! Plan Confirm! Chalo aage date aur time select karte hain! 😍💃");
-            nextPage();
-        }
-
-        function lockScheduleData() {
-            const dVal = document.getElementById('input-date').value;
-            const tVal = document.getElementById('input-time').value;
-            
-            if (!dVal || !tVal) {
-                alert("Kripya date aur time dono choose kijiye!");
-                return;
-            }
-            
-            document.getElementById('form-date').value = dVal;
-            document.getElementById('form-time').value = tVal;
-            document.getElementById('lbl-date').innerText = dVal;
-            document.getElementById('lbl-time').innerText = tVal;
-            
-            const nativeForm = document.getElementById('hidden-form');
-            const serializationData = new FormData(nativeForm);
-            
-            fetch(nativeForm.action, {
-                method: 'POST',
-                body: serializationData,
-                headers: { 'Accept': 'application/json' }
-            });
-            
-            nextPage();
-        }
-
-        function openEnvelopeLetter() {
-            document.getElementById('envelope-wrapper').style.display = 'none';
-            document.getElementById('letter-body').style.display = 'block';
-            document.getElementById('final-scratch-segment').style.display = 'block';
-            
-            const fCanvas = document.getElementById('final-canvas');
-            const fCtx = fCanvas.getContext('2d');
-            fCtx.fillStyle = '#ffb3ba';
-            fCtx.fillRect(0, 0, fCanvas.width, fCanvas.height);
-            fCtx.font = '600 14px Poppins';
-            fCtx.fillStyle = '#d84b6b';
-            fCtx.textAlign = 'center';
-            fCtx.fillText('Scratch to Reveal Schedule 🌹', fCanvas.width / 2, fCanvas.height / 2);
-            
-            let paintingFinal = false;
-            function drawFinalScratch(e) {
-                if (!paintingFinal) return;
-                const rect = fCanvas.getBoundingClientRect();
-                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                
-                fCtx.globalCompositeOperation = 'destination-out';
-                fCtx.beginPath();
-                fCtx.arc(x, y, 25, 0, Math.PI * 2);
-                fCtx.fill();
-            }
-            
-            fCanvas.onmousedown = () => paintingFinal = true;
-            fCanvas.ontouchstart = (e) => { paintingFinal = true; drawFinalScratch(e); };
-            fCanvas.onmousemove = drawFinalScratch;
-            fCanvas.ontouchmove = (e) => { e.preventDefault(); drawFinalScratch(e); };
-            window.onmouseup = () => paintingFinal = false;
-            window.ontouchend = () => paintingFinal = false;
-        }
-
+        // BACKGROUND SPARKLES
         const sCanvas = document.getElementById('sparkle-canvas');
         const sCtx = sCanvas.getContext('2d');
-        let sparklesArray = [];
-
-        function resizeSparkleCanvas() {
-            sCanvas.width = window.innerWidth;
-            sCanvas.height = window.innerHeight;
-        }
-        window.onresize = resizeSparkleCanvas;
-        resizeSparkleCanvas();
-
-        class ParticleSparkle {
-            constructor() {
-                this.x = Math.random() * sCanvas.width;
-                this.y = sCanvas.height + Math.random() * 50;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 1.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.color = `rgba(255, ${Math.floor(Math.random() * 80) + 120}, ${Math.floor(Math.random() * 50) + 150}, ${Math.random() * 0.6 + 0.4})`;
-            }
-            update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-            }
-            draw() {
-                sCtx.fillStyle = this.color;
-                sCtx.beginPath();
-                sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                sCtx.fill();
+        sCanvas.width = window.innerWidth;
+        sCanvas.height = window.innerHeight;
+        let particles = [];
+        function initParticles() {
+            for(let i=0; i<30; i++) {
+                particles.push({
+                    x: Math.random() * sCanvas.width,
+                    y: Math.random() * sCanvas.height,
+                    r: Math.random() * 3 + 1,
+                    d: Math.random() * 10
+                });
             }
         }
-
-        function animateParticles() {
+        function drawParticles() {
             sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
-            if (sparklesArray.length < 90) sparklesArray.push(new ParticleSparkle());
-            for (let i = 0; i < sparklesArray.length; i++) {
-                sparklesArray[i].update();
-                sparklesArray[i].draw();
-                if (sparklesArray[i].y < -10) {
-                    sparklesArray.splice(i, 1);
-                    i--;
+            sCtx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            sCtx.beginPath();
+            for(let i=0; i<particles.length; i++) {
+                let p = particles[i];
+                sCtx.moveTo(p.x, p.y);
+                sCtx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+                p.y += Math.sin(p.d) + 1;
+                if(p.y > sCanvas.height) {
+                    particles[i] = {x: Math.random() * sCanvas.width, y: -10, r: p.r, d: p.d};
                 }
             }
-            requestAnimationFrame(animateParticles);
+            sCtx.fill();
+            requestAnimationFrame(drawParticles);
         }
-        animateParticles();
+        initParticles();
+        drawParticles();
     </script>
 </body>
 </html>
