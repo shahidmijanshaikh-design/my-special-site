@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cute Besti</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff6b8b;
+            --secondary-pink: #ff8e71;
+            --bg-light: #fff5f7;
+            --dark-pink: #d84b6b;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: #333;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--white);
+            min-height: 90vh;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 107, 139, 0.2);
+            position: relative;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 4px solid #ffe3e8;
+            margin: 20px 10px;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 0px #fff, 2px 2px 0px #ffe3e8;
+        }
+
+        p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary-pink), var(--secondary-pink));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 139, 0.6);
+        }
+
+        .btn-heart {
+            font-size: 20px;
+            padding: 12px 20px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            margin-top: 0;
+            z-index: 10;
+        }
+
+        input[type="text"], input[type="password"], input[type="date"], input[type="time"], textarea {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #ffccd5;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+            margin-bottom: 15px;
+            background-color: #fff9fa;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-pink);
+            background-color: #fff;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+            text-align: left;
+            border-radius: 15px;
+        }
+
+        .lock-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .btn-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            margin-top: 20px;
+        }
+
+        .btn-choice {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-bf {
+            background-color: #f1f1f1;
+            color: #555;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .btn-ff {
+            background: var(--primary-pink);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.3);
+        }
+
+        .gift-box {
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .heart-box-container {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .heart-box {
+            font-size: 60px;
+            color: var(--primary-pink);
+            margin-bottom: 15px;
+        }
+
+        .scratch-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 15px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            border: 4px solid var(--primary-pink);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: crosshair;
+            z-index: 2;
+        }
+
+        .quiz-options {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .opt-btn {
+            background: #fff;
+            border: 2px solid #ffccd5;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: left;
+            color: #555;
+        }
+
+        .opt-btn:hover {
+            background: #fff0f2;
+            border-color: var(--primary-pink);
+        }
+
+        .opt-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .opt-btn.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .wheel-box {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 20px auto;
+        }
+
+        .wheel-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 0 8px var(--primary-pink), 0 8px 20px rgba(0,0,0,0.2);
+            transform: rotate(0deg);
+            transition: transform 4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid var(--dark-pink);
+            z-index: 5;
+        }
+
+        .wheel-result {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--dark-pink);
+            min-height: 24px;
+            font-size: 16px;
+        }
+
+        .calc-input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .calc-result-box {
+            display: none;
+            margin-top: 20px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .calc-bar-container {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .calc-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-pink), var(--secondary-pink));
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
+
+        .calc-score {
+            font-size: 24px;
+            font-family: 'Fredoka One', cursive;
+            color: var(--primary-pink);
+        }
+
+        #hidden-form {
+            display: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 107, 139, 0.15);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .final-shayari {
+            font-family: 'Dancing Script', cursive;
+            font-size: 22px;
+            color: var(--dark-pink);
+            line-height: 1.5;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden Formspree Submission Data link attached -->
+    <form id="hidden-form" action="https://formspree.io/f/xvzeowdw" method="POST">
+        <input type="text" name="Bestie_Note" id="form-note">
+        <input type="text" name="Wheel_Result" id="form-wheel">
+        <input type="text" name="Selected_Date" id="form-date">
+        <input type="text" name="Selected_Time" id="form-time">
+    </form>
+
+    <div class="container" id="main-container">
+        
+        <!-- PAGE 1: LOCK SCREEN -->
+        <div class="page active" id="page1">
+            <div class="lock-icon">🔐</div>
+            <h1>Hey Bestie!</h1>
+            <p>Yeh website sirf mere sabse pyaare dost ke liye hai. Ise kholne ke liye Secret Code daalein! 🤫</p>
+            <input type="password" id="pin-code" placeholder="Enter 4-Digit PIN..." maxlength="4">
+            <div class="error-msg" id="pin-error">Wrong PIN! Dimag lagao ya Shahid se pucho 😜</div>
+            <button class="btn" onclick="checkPin()">Unlock ❤️</button>
+        </div>
+
+        <!-- PAGE 2: FUNNY FIRST QUESTION -->
+        <div class="page" id="page2">
+            <h1>Chalo Ek Sach Batao! 🤔</h1>
+            <p>Aapko apni life mein sabse zyada kaun pasand hai? Sach sach chunnna!</p>
+            <div class="btn-container" id="bf-game-area">
+                <button class="btn-choice btn-ff" onclick="selectBestFriend()" style="position: absolute; left: 20px; top: 40px;">My Best Friend (Shahid) 💖</button>
+                <button class="btn-choice btn-bf" id="bf-btn" onmouseover="moveBoyfriendButton()" onclick="moveBoyfriendButton()" style="left: 140px; top: 100px;">Boyfriend 🤵</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: GIFT BOX & SCRATCH CARDS -->
+        <div class="page" id="page3">
+            <div id="gift-initial">
+                <h1>A Special Gift For You! 🎁</h1>
+                <p>Niche diye gaye box par click karke dekho isme kya hai...</p>
+                <div class="gift-box" onclick="openGift()">🎁</div>
+            </div>
+            
+            <div class="heart-box-container" id="gift-content">
+                <div class="heart-box">💖</div>
+                <h2 id="scratch-title">Scratch Card 1 / 4</h2>
+                <p id="scratch-instruction">Apni finger ya mouse se scratch karke photo dekho!</p>
+                
+                <div class="scratch-container" id="scratch-box">
+                    <canvas class="scratch-canvas" id="scratch-canvas" width="220" height="220"></canvas>
+                </div>
+                
+                <div id="notes-area" style="display:none; width:100%;">
+                    <h2>Aapke Pyaare Dost Shahid Ke Liye 💕</h2>
+                    <p>Aap aap ke sab se pyare dost shahid ke bare me kuch likhiye:</p>
+                    <textarea id="bestie-note-input" placeholder="Type here... Mujhe pata hai main bohot accha hu par thoda tareef chalega 😜"></textarea>
+                </div>
+
+                <button class="btn" id="gift-next-btn" onclick="nextScratchCard()">Next Photo ➡️</button>
+            </div>
+        </div>
+
+        <!-- PAGE 4: BEST FRIEND QUIZ -->
+        <div class="page" id="page4">
+            <h2 id="quiz-title">Quiz Time! 🧠</h2>
+            <p id="quiz-question">Question loading...</p>
+            <div class="quiz-options" id="quiz-options"></div>
+            <div id="quiz-completion" style="display: none; margin-top: 20px;">
+                <div style="font-size: 50px; margin-bottom: 10px;">❤️</div>
+                <h2>Thanks Yaar Meri Life Me Aane Ke Liye! 🥺✨</h2>
+                <p>Tum sach me sabse best ho!</p>
+            </div>
+            <button class="btn btn-heart" id="quiz-next-btn" onclick="handleQuizNext()">❤️</button>
+        </div>
+
+        <!-- PAGE 5: SPIN THE WHEEL -->
+        <div class="page" id="page5">
+            <h1>Spin the Wheel 🎡</h1>
+            <p>Chalo dekhte hain aaj aap mujhe kya khilaogi ya hamara agla plan kya hoga! Click SPIN!</p>
+            <div class="wheel-box">
+                <div class="wheel-pointer"></div>
+                <canvas class="wheel-canvas" id="wheel-canvas" width="260" height="260"></canvas>
+            </div>
+            <button class="btn" id="spin-btn" onclick="spinWheel()">SPIN NOW 🎯</button>
+            <div class="wheel-result" id="wheel-result"></div>
+            <button class="btn btn-heart" id="wheel-next-btn" onclick="nextPage()" style="display:none;">❤️</button>
+        </div>
+
+        <!-- PAGE 6: FRIENDSHIP CALCULATOR -->
+        <div class="page" id="page6">
+            <h1>Friendship Calculator 💯</h1>
+            <p>Apna aur apne dost ka naam likh kar check karo dosti ka score!</p>
+            <div class="calc-input-box">
+                <input type="text" id="name1" placeholder="Your Name (Manali)...">
+                <input type="text" id="name2" placeholder="Friend's Name (Shahid)...">
+            </div>
+            <button class="btn" onclick="calculateFriendship()">Calculate ⚡</button>
+            
+            <div class="calc-result-box" id="calc-result">
+                <h2 id="calc-names">Manali + Shahid</h2>
+                <div class="calc-bar-container">
+                    <div class="calc-bar" id="calc-bar"></div>
+                </div>
+                <div class="calc-score" id="calc-score">100%</div>
+                <p id="calc-comment" style="margin-top: 10px; font-weight: 600; color: var(--dark-pink);"></p>
+            </div>
+            <button class="btn btn-heart" id="calc-next-btn" onclick="nextPage()" style="display:none;">❤️</button>
+        </div>
+
+        <!-- PAGE 7: DATE INVITATION -->
+        <div class="page" id="page7">
+            <h1>Chalo Date Pe Chalein? ☕✨</h1>
+            <p>Shahid ke sath chalna hai date pe masti karne? Yes bolo jaldi!</p>
+            <div class="btn-container" id="date-game-area">
+                <button class="btn-choice btn-ff" onclick="acceptDate()" style="position: absolute; left: 40px; top: 40px;">YES! Chalo 😍</button>
+                <button class="btn-choice btn-bf" id="date-no-btn" onmouseover="moveDateNoButton()" onclick="moveDateNoButton()" style="left: 140px; top: 100px;">NO ❌</button>
+            </div>
+        </div>
+
+        <!-- PAGE 8: SELECT DATE & TIME -->
+        <div class="page" id="page8">
+            <h1>Yayyy! Plan Fix! 🎉</h1>
+            <p>Ab aap hi select kijiye ki hum kab chal rahe hain. Date aur time chunno madam!</p>
+            <input type="date" id="meet-date" required>
+            <input type="time" id="meet-time" required>
+            <button class="btn" onclick="submitDateTime()">Confirm & Lock Date 🔒</button>
+        </div>
+
+        <!-- PAGE 9: FINAL END SCREEN & SCRATCH CARD -->
+        <div class="page" id="page9">
+            <h1>Milte Hain Phir! 🌹✨</h1>
+            <div class="final-shayari">
+                "Dosti ka rishta anmol hota hai,<br>
+                Har kisi ke paas tum jaisa dost kahaan hota hai!<br>
+                Khushnaseeb hain hum jo mile tum jaise,<br>
+                Kyuki cute besti ka dil ekdum saaf hota hai!" ❤️
+            </div>
+            <p>Niche diye card ko scratch karke hamara final date schedule dekho! Ek pyaara sa rose aapke liye 🌹</p>
+            
+            <div class="scratch-container" id="final-scratch-box" style="background-color: #fff0f2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px;">
+                <div style="z-index: 1; font-weight: bold; color: var(--dark-pink);">
+                    <div style="font-size: 30px;">🌹</div>
+                    <div style="font-size: 16px; margin-top:5px;">DATE: <span id="final-d-text">-</span></div>
+                    <div style="font-size: 16px;">TIME: <span id="final-t-text">-</span></div>
+                    <div style="font-size: 13px; font-weight:normal; margin-top:5px; color:#666;">Shahid is waiting! ✨</div>
+                </div>
+                <canvas class="scratch-canvas" id="final-canvas" width="220" height="220"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentPage = 1;
+
+        // **NOTE FOR SHAHID**: In links ko aap apni real photo ke link se change kar sakte hain!
+        const photoUrls = [
+            'https://picsum.photos/id/1025/300/300', // Photo 1
+            'https://picsum.photos/id/103/300/300',  // Photo 2
+            'https://picsum.photos/id/1062/300/300', // Photo 3
+            'https://picsum.photos/id/1084/300/300'  // Photo 4
+        ];
+        let currentScratchIdx = 0;
+
+        const quizQuestions = [
+            {
+                q: "Shahid ki sabse buri ya ajeeb aadat kaunsi hai jo aapko jhelni padti hai?",
+                options: ["Pura din pakana 🙄", "Late aana ⏰", "Faltu jokes maarna 🤡", "All of the above (Lekin dil ka saaf hai) ❤️"],
+                ans: 3
+            },
+            {
+                q: "Agar Shahid ko koi kidney chor pakad le, toh aap kya karogi?",
+                options: ["Police ko bulaungi jaldi 🚨", "Us chor ke sath mil kar party karungi 🥳", "Kidney ke paise aadhi-aadhi baat lungi 😂"],
+                ans: 2
+            },
+            {
+                q: "Hum dono me se sabse zyada samajhdar aur intelligent kaun hai?",
+                options: ["Shahid 😎", "Shahid ka tez dimaag 🧠", "Manali (Wrong Answer 😂)"],
+                ans: 0
+            },
+            {
+                q: "Hamari dosti ka sabse best part kya hai?",
+                options: ["Har baat pe tang khichna 🤪", "2 AM wale emotional baatein 🥺", "Free ka khana pina 🍕", "Shahid jaisa heera dost milna 💎"],
+                ans: 3
+            },
+            {
+                q: "Kya aapko lagta hai ki Shahid jaisa dost kismat walo ko milta hai?",
+                options: ["Haan bilkul! 😍", "100% Yes! ✨", "Isme koi shak hai kya! 🌟"],
+                ans: 0
+            }
+        ];
+        let currentQuizIdx = 0;
+
+        const wheelSectors = ["Chocolate 🍫", "Chay ☕", "Pani Puri 🧆", "Pizza 🍕", "Bunk karke ghumna 🚗", "Party Time 🎉"];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + pageId).classList.add('active');
+            currentPage = pageId;
+            
+            if (pageId === 3 && currentScratchIdx < photoUrls.length) {
+                initScratchCard('scratch-canvas', 'scratch-box', photoUrls[currentScratchIdx]);
+            }
+        }
+
+        function nextPage() {
+            showPage(currentPage + 1);
+        }
+
+        function checkPin() {
+            const pin = document.getElementById('pin-code').value;
+            if (pin === '2411') {
+                document.getElementById('pin-error').style.display = 'none';
+                nextPage();
+            } else {
+                document.getElementById('pin-error').style.display = 'block';
+            }
+        }
+
+        function moveBoyfriendButton() {
+            const btn = document.getElementById('bf-btn');
+            const area = document.getElementById('bf-game-area');
+            const maxW = area.clientWidth - btn.clientWidth - 10;
+            const maxH = area.clientHeight - btn.clientHeight - 10;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxW));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxH));
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function selectBestFriend() {
+            alert("Aww! Mujhe pata tha tum Best Friend ko hi select karogi! 🥰");
+            nextPage();
+        }
+
+        function moveDateNoButton() {
+            const btn = document.getElementById('date-no-btn');
+            const area = document.getElementById('date-game-area');
+            const maxW = area.clientWidth - btn.clientWidth - 10;
+            const maxH = area.clientHeight - btn.clientHeight - 10;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxW));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxH));
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function acceptDate() {
+            alert("Yayyy! Date confirmed! Chalo next page pe details set karte hain! 😍💃");
+            nextPage();
+        }
+
+        function openGift() {
+            document.getElementById('gift-initial').style.display = 'none';
+            document.getElementById('gift-content').style.display = 'flex';
+            initScratchCard('scratch-canvas', 'scratch-box', photoUrls[0]);
+        }
+
+        function initScratchCard(canvasId, boxId, bgImage) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const box = document.getElementById(boxId);
+            
+            box.style.backgroundImage = `url('${bgImage}')`;
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = 'bold 16px Poppins';
+            ctx.fillStyle = '#888';
+            ctx.textAlign = 'center';
+            ctx.fillText('Scratch Here! ✨', canvas.width / 2, canvas.height / 2);
+            
+            let isDrawing = false;
+            function scratch(e) {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 25, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('touchstart', () => isDrawing = true);
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', scratch);
+            window.addEventListener('mouseup', () => isDrawing = false);
+            window.addEventListener('touchend', () => isDrawing = false);
+        }
+
+        function nextScratchCard() {
+            currentScratchIdx++;
+            if (currentScratchIdx < photoUrls.length) {
+                document.getElementById('scratch-title').innerText = `Scratch Card ${currentScratchIdx + 1} / 4`;
+                initScratchCard('scratch-canvas', 'scratch-box', photoUrls[currentScratchIdx]);
+            } else if (currentScratchIdx === photoUrls.length) {
+                document.getElementById('scratch-box').style.display = 'none';
+                document.getElementById('scratch-title').style.display = 'none';
+                document.getElementById('scratch-instruction').style.display = 'none';
+                document.getElementById('notes-area').style.display = 'block';
+                document.getElementById('gift-next-btn').innerText = "Close Box & Next 🔒";
+            } else {
+                const noteValue = document.getElementById('bestie-note-input').value;
+                document.getElementById('form-note').value = noteValue;
+                showQuiz();
+            }
+        }
+
+        function showQuiz() {
+            showPage(4);
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (currentQuizIdx < quizQuestions.length) {
+                const qData = quizQuestions[currentQuizIdx];
+                document.getElementById('quiz-title').innerText = `Question ${currentQuizIdx + 1} / 5`;
+                document.getElementById('quiz-question').innerText = qData.q;
+                
+                const optionsContainer = document.getElementById('quiz-options');
+                optionsContainer.innerHTML = '';
+                
+                qData.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => selectQuizOption(idx, qData.ans, btn);
+                    optionsContainer.appendChild(btn);
+                });
+                document.getElementById('quiz-next-btn').style.display = 'none';
+            } else {
+                document.getElementById('quiz-title').style.display = 'none';
+                document.getElementById('quiz-question').style.display = 'none';
+                document.getElementById('quiz-options').style.display = 'none';
+                document.getElementById('quiz-completion').style.display = 'block';
+                document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+            }
+        }
+
+        function selectQuizOption(selectedIdx, correctIdx, btnElement) {
+            const buttons = document.querySelectorAll('.opt-btn');
+            buttons.forEach(b => b.removeAttribute('onclick'));
+            if (selectedIdx === correctIdx || currentQuizIdx === 4) {
+                btnElement.classList.add('correct');
+            } else {
+                btnElement.classList.add('wrong');
+                buttons[correctIdx].classList.add('correct');
+            }
+            setTimeout(() => {
+                currentQuizIdx++;
+                loadQuizQuestion();
+            }, 1800);
+        }
+
+        function handleQuizNext() {
+            nextPage();
+            initWheel();
+        }
+
+        let wheelCanvas = document.getElementById('wheel-canvas');
+        let wCtx = wheelCanvas.getContext('2d');
+        let hasSpun = false;
+
+        function initWheel() {
+            const colors = ["#ff6b8b", "#ff8e71", "#ffb3ba", "#ffc6ff", "#e8aeff", "#b3c5ff"];
+            const totalSectors = wheelSectors.length;
+            const arc = Math.PI * 2 / totalSectors;
+            wCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+            for(let i=0; i<totalSectors; i++) {
+                wCtx.fillStyle = colors[i % colors.length];
+                wCtx.beginPath();
+                wCtx.moveTo(130, 130);
+                wCtx.arc(130, 130, 130, i * arc, (i + 1) * arc);
+                wCtx.lineTo(130, 130);
+                wCtx.fill();
+                wCtx.save();
+                wCtx.fillStyle = "white";
+                wCtx.font = "bold 12px Poppins";
+                wCtx.translate(130, 130);
+                wCtx.rotate(i * arc + arc/2);
+                wCtx.textAlign = "right";
+                wCtx.fillText(wheelSectors[i], 120, 5);
+                wCtx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (hasSpun) return;
+            hasSpun = true;
+            document.getElementById('spin-btn').disabled = true;
+            const totalSectors = wheelSectors.length;
+            const randomSector = Math.floor(Math.random() * totalSectors);
+            const degreesPerSector = 360 / totalSectors;
+            const extraSpins = 5 * 360; 
+            const targetDegrees = extraSpins + (360 - (randomSector * degreesPerSector) - (degreesPerSector / 2));
+            
+            wheelCanvas.style.transform = `rotate(${targetDegrees}deg)`;
+            setTimeout(() => {
+                const wonItem = wheelSectors[randomSector];
+                document.getElementById('wheel-result').innerText = `🎉 Result: ${wonItem}! Chalo ab Shahid ko iski party deni padegi! 😜`;
+                document.getElementById('form-wheel').value = wonItem;
+                document.getElementById('wheel-next-btn').style.display = 'inline-flex';
+            }, 4000);
+        }
+
+        function calculateFriendship() {
+            const n1 = document.getElementById('name1').value.trim().toLowerCase();
+            const n2 = document.getElementById('name2').value.trim().toLowerCase();
+            if (!n1 || !n2) {
+                alert("Please donon names fill kijiye!");
+                return;
+            }
+            document.getElementById('calc-result').style.display = 'block';
+            const bar = document.getElementById('calc-bar');
+            const scoreEl = document.getElementById('calc-score');
+            const commentEl = document.getElementById('calc-comment');
+            
+            const isMatch = (n1.includes('shahid') && n2.includes('manali')) || (n1.includes('manali') && n2.includes('shahid'));
+            let finalScore = isMatch ? 100 : Math.floor(Math.random() * 40) + 50;
+            let finalComment = isMatch ? "Wow! Shahid aur Manali toh Jai-Veeru jaise sachay dost hain! 100% Perfect Bond! 💎✨" : "Achha bond hai, par Shahid aur Manali jaisa koi nahi ban sakta! 😜";
+            
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = finalScore + '%';
+                scoreEl.innerText = finalScore + '%';
+                commentEl.innerText = finalComment;
+                document.getElementById('calc-next-btn').style.display = 'inline-flex';
+            }, 200);
+        }
+
+        function submitDateTime() {
+            const dateVal = document.getElementById('meet-date').value;
+            const timeVal = document.getElementById('meet-time').value;
+            if (!dateVal || !timeVal) {
+                alert("Please date aur time select kijiye!");
+                return;
+            }
+            document.getElementById('form-date').value = dateVal;
+            document.getElementById('form-time').value = timeVal;
+            document.getElementById('final-d-text').innerText = dateVal;
+            document.getElementById('final-t-text').innerText = timeVal;
+            
+            const form = document.getElementById('hidden-form');
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            showPage(9);
+            initScratchCard('final-canvas', 'final-scratch-box', 'rgba(0,0,0,0)');
+            const fCanvas = document.getElementById('final-canvas');
+            const fCtx = fCanvas.getContext('2d');
+            fCtx.fillStyle = '#ffb3ba';
+            fCtx.fillRect(0, 0, fCanvas.width, fCanvas.height);
+            fCtx.font = 'bold 15px Poppins';
+            fCtx.fillStyle = '#d84b6b';
+            fCtx.textAlign = 'center';
+            fCtx.fillText('Scratch to Reveal Date 🌹', fCanvas.width / 2, fCanvas.height / 2);
+        }
+
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerText = ['❤️','💖','💝','💕'][Math.floor(Math.random()*4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createFloatingHeart, 800);
+    </script>
+</body>
+</html>
